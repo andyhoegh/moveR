@@ -6,6 +6,15 @@ Author: Andrew Hoegh
 Maintainer: Andrew Hoegh <andrew.hoegh@montana.edu>
 Description: Contains algorithms for fitting particle-MCMC methods
     for agent-based models for collective animal movement.
-License: What license is it under?
+License: GPL-2 
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 6.1.1
+Imports: 
+    LearnBayes,
+    circular,
+    truncnorm,
+    tibble,
+    useful,
+    stats
+    
