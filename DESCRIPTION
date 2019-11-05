@@ -1,11 +1,11 @@
 Package: moveR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Agent-Based Models for Animal Movement
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Author: Andrew Hoegh
+Maintainer: Andrew Hoegh <andrew.hoegh@montana.edu>
+Description: Contains algorithms for fitting particle-MCMC methods
+    for agent-based models for collective animal movement.
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
