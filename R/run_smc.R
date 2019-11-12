@@ -1,7 +1,7 @@
 #' A Function to run a particle filter
 #'
 #' @param num_particles The number of particles for the particle filter for animal movement model
-#' @param data A data frame
+#' @param data A data frame with num_times rows and 2 columns with location data
 #' @param mu_val Value for the mean step size
 #' @param sigma_val Value for the standard deviation of step size
 #' @param kappa_val Value for kappa concentration parameter in VonMises distribution
@@ -23,9 +23,9 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
   descendents <- array(0, dim=c(num_particles, time_points))
 
   #calculate weights
-  w[,1] <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps) /
-    LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * .1)
-  w_norm <- w[,1] / sum(w[,1])
+  w[,1] <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps, log = T) -
+    LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * .1, log = T)
+  w_norm <- smcUtils::renormalize(w[,1], log = T)
   descendents[,1] <- sample(num_particles, replace = T, prob = w_norm)
   particle_values[1,,] <- particle_values[1,descendents[,1] ,]
 
@@ -48,7 +48,7 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
 
     # calculate weights
     w[,t] <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps)
-    w_norm <- w[,t] / sum(w[,t])
+    w_norm <- smcUtils::renormalize(w[,t], log = T)
     descendents[,t] <- sample(num_particles, replace = T, prob = w_norm)
     particle_values[t,,] <- particle_values[t, descendents[,t],]
   }

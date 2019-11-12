@@ -16,5 +16,5 @@ Imports:
     truncnorm,
     tibble,
     useful,
-    stats
-    
+    stats,
+    smcUtils
