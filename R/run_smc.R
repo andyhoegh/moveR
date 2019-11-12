@@ -31,7 +31,7 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
   descendents[,1] <- sample(num_particles, replace = T, prob = log_w)
   particle_values[1,,] <- particle_values[1,descendents[,1] ,]
 
-  # Time 2:T
+   # Time 2:T
   for (t in 2:time_points){
     # propose angles
     home_path <- tibble::tibble(x = data[1, 1] - particle_values[t-1,,1]  ,
@@ -51,7 +51,7 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
     # calculate weights
     w[,t] <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps)
     log_w <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps, log = T)
-    log_w <- smcUtils::renormalize(w[,t], log = T)
+    log_w <- smcUtils::renormalize(log_w, log = T)
     descendents[,t] <- sample(num_particles, replace = T, prob = log_w)
     particle_values[t,,] <- particle_values[t, descendents[,t],]
   }
