@@ -23,17 +23,19 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
   descendents <- array(0, dim=c(num_particles, time_points))
 
   #calculate weights
-  w[,1] <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps, log = T) -
+  w[,1] <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps) /
+    LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * .1)
+  log_w <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps, log = T) -
     LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * .1, log = T)
-  w[,1] <- smcUtils::renormalize(w[,1], log = T)
-  descendents[,1] <- sample(num_particles, replace = T, prob = w[,1])
+  log_w <- smcUtils::renormalize(log_w, log = T)
+  descendents[,1] <- sample(num_particles, replace = T, prob = log_w)
   particle_values[1,,] <- particle_values[1,descendents[,1] ,]
 
   # Time 2:T
   for (t in 2:time_points){
     # propose angles
     home_path <- tibble::tibble(x = data[1, 1] - particle_values[t-1,,1]  ,
-                        y = data[1, 2] - particle_values[t-1,,2]  )
+                                y = data[1, 2] - particle_values[t-1,,2]  )
     home_angle <-  useful::cart2pol(home_path$x, home_path$y)$theta
     particle_values[t,,6] <- circular::rvonmises(num_particles, mu = circular::circular(0), kappa = kappa_val)
     particle_values[t,,3] <- cos(particle_values[t,,6] + home_angle) # x coord
@@ -47,9 +49,10 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
       stats::rnorm(num_particles * 2, mean = 0, sd = sqrt(sigmasq_eta))
 
     # calculate weights
-    w[,t] <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps, log = T)
-    w[,t] <- smcUtils::renormalize(w[,t], log = T)
-    descendents[,t] <- sample(num_particles, replace = T, prob = w[,t])
+    w[,t] <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps)
+    log_w <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps, log = T)
+    log_w <- smcUtils::renormalize(w[,t], log = T)
+    descendents[,t] <- sample(num_particles, replace = T, prob = log_w)
     particle_values[t,,] <- particle_values[t, descendents[,t],]
   }
   index <- rep(0, time_points)
