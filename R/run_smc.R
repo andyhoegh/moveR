@@ -23,10 +23,9 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
   descendents <- array(0, dim=c(num_particles, time_points))
 
   #calculate weights
-  w[,1] <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps) /
-    LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * .1)
   log_w <- LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * sigmasq_eps, log = T) -
     LearnBayes::dmnorm(particle_values[1,,1:2], mean = c(data[1,1],data[1,2]), varcov = diag(2) * .1, log = T)
+  w[,1] <- exp(log_w)
   log_w <- smcUtils::renormalize(log_w, log = T)
   descendents[,1] <- sample(num_particles, replace = T, prob = log_w)
   particle_values[1,,] <- particle_values[1,descendents[,1] ,]
@@ -49,8 +48,8 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
       stats::rnorm(num_particles * 2, mean = 0, sd = sqrt(sigmasq_eta))
 
     # calculate weights
-    w[,t] <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps)
     log_w <- LearnBayes::dmnorm(particle_values[t,,1:2], mean = c(data[t,1], data[t,2]), varcov = diag(2) * sigmasq_eps, log = T)
+    w[,t] <- exp(log_w)
     log_w <- smcUtils::renormalize(log_w, log = T)
     descendents[,t] <- sample(num_particles, replace = T, prob = log_w)
     particle_values[t,,] <- particle_values[t, descendents[,t],]
