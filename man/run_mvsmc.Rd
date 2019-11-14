@@ -10,7 +10,7 @@ run_mvsmc(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_eta,
 \arguments{
 \item{num_particles}{The number of particles for the particle filter for animal movement model}
 
-\item{data}{A array with dimension num_bears X num_times X 2 columns with location data}
+\item{data}{A array with dimension num_bears x num_times X 2 columns with location data}
 
 \item{mu_val}{Value for the mean step size}
 
