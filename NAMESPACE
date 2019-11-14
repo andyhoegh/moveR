@@ -2,3 +2,4 @@
 
 export(run_mvsmc)
 export(run_smc)
+export(sim_agents)
