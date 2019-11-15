@@ -17,4 +17,5 @@ Imports:
     tibble,
     useful,
     stats,
-    smcUtils
+    smcUtils,
+    mnormt

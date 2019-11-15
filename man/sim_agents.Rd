@@ -4,17 +4,19 @@
 \alias{sim_agents}
 \title{A Function to run a particle filter}
 \usage{
-sim_agents(num_agents, time_points, mu_true, sigma_true, kappa_true,
+sim_agents(num_agents, time_points, mu_true, sigma_true, mu_theta_true,
   sigmasq_eps, sigmasq_eta, x_range, y_range)
 }
 \arguments{
 \item{num_agents}{The number of agents to simulate}
 
+\item{time_points}{The number of discrete time steps}
+
 \item{mu_true}{Value for mean step size in truncated normal distribution}
 
 \item{sigma_true}{Value for the standard deviation of mean step size in truncated normal distribution}
 
-\item{kappa_true}{Value for the concentration parameter in Von Mises distribution}
+\item{mu_theta_true}{Vector for mean of multivariate normal (for projected normal distribution)}
 
 \item{sigmasq_eps}{Value for eps}
 

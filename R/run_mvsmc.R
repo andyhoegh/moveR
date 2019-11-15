@@ -23,7 +23,7 @@ run_mvsmc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq
   theta <- circular::rvonmises(num_particles * num_bears, mu = circular::circular(0), kappa = .1)
   particle_values[1,,3,] <- sin(theta)
   particle_values[1,,3,] <- cos(theta)
-  particle_values[1,,5,] <- truncnorm::rtruncnorm(num_particles, a = 0, b = Inf, mean = mu_start, sd = sigma_start)
+  particle_values[1,,5,] <- truncnorm::rtruncnorm(num_particles, a = 0, b = Inf, mean = mu_val, sd = sigma_val)
   descendents <- array(0, dim=c(num_particles, time_points))
 
   #calculate weights
