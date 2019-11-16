@@ -18,4 +18,5 @@ Imports:
     useful,
     stats,
     smcUtils,
-    mnormt
+    mnormt,
+    progress
