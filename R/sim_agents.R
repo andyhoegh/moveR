@@ -1,4 +1,4 @@
-#' A Function to run a particle filter
+#' A Function to simulate animal movement with an ABM
 #'
 #' @param num_agents The number of agents to simulate
 #' @param time_points The number of discrete time steps

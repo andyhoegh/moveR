@@ -4,7 +4,7 @@
 \alias{run_smc}
 \title{A Function to run a particle filter}
 \usage{
-run_smc(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_eta,
+run_smc(num_particles, data, mu_val, sigma_val, mu_theta_val, sigmasq_eta,
   sigmasq_eps)
 }
 \arguments{
@@ -16,7 +16,7 @@ run_smc(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_eta,
 
 \item{sigma_val}{Value for the standard deviation of step size}
 
-\item{kappa_val}{Value for kappa concentration parameter in VonMises distribution}
+\item{mu_theta_val}{Vector for 2-D Normal mean for projected Normal Distribution}
 
 \item{sigmasq_eta}{Value for eta}
 

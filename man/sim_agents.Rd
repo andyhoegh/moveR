@@ -2,7 +2,7 @@
 % Please edit documentation in R/sim_agents.R
 \name{sim_agents}
 \alias{sim_agents}
-\title{A Function to run a particle filter}
+\title{A Function to simulate animal movement with an ABM}
 \usage{
 sim_agents(num_agents, time_points, mu_true, sigma_true, mu_theta_true,
   sigmasq_eps, sigmasq_eta, x_range, y_range)
@@ -30,5 +30,5 @@ sim_agents(num_agents, time_points, mu_true, sigma_true, mu_theta_true,
 An array of dimension (num_agents X time_points x 2) containing the agent locations
 }
 \description{
-A Function to run a particle filter
+A Function to simulate animal movement with an ABM
 }

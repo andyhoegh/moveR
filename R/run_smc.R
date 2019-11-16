@@ -4,19 +4,20 @@
 #' @param data A data frame with num_times rows and 2 columns with location data
 #' @param mu_val Value for the mean step size
 #' @param sigma_val Value for the standard deviation of step size
-#' @param kappa_val Value for kappa concentration parameter in VonMises distribution
+#' @param mu_theta_val Vector for 2-D Normal mean for projected Normal Distribution
 #' @param sigmasq_eta Value for eta
 #' @param sigmasq_eps Value for eps
 #' @return A list containing the path and the log probability of the path
 #' @export
-run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_eta, sigmasq_eps){
+run_smc <- function(num_particles, data, mu_val, sigma_val, mu_theta_val, sigmasq_eta, sigmasq_eps){
   time_points <- nrow(data)
   particle_values <- array(0, dim=c(time_points, num_particles, 6))
   w <- matrix(0, nrow = num_particles, ncol = time_points)
 
   # Time 1
   particle_values[1,,1:2] <- LearnBayes::rmnorm(num_particles, mean = c(data[1,1], data[1,2]), varcov = diag(2)*.1)
-  theta <- circular::rvonmises(num_particles, mu = circular::circular(0), kappa = .1)
+  theta_tmp <- mnormt::rmnorm(num_particles, mean = mu_theta_val, varcov = diag(2))
+  theta <- useful::cart2pol(theta_tmp[,1], theta_tmp[,2])$theta
   particle_values[1,,3] <- sin(theta)
   particle_values[1,,3] <- cos(theta)
   particle_values[1,,5] <- truncnorm::rtruncnorm(num_particles, a = 0, b = Inf, mean = mu_val, sd = sigma_val)
@@ -30,13 +31,14 @@ run_smc <- function(num_particles, data, mu_val, sigma_val, kappa_val, sigmasq_e
   descendents[,1] <- sample(num_particles, replace = T, prob = log_w)
   particle_values[1,,] <- particle_values[1,descendents[,1] ,]
 
-   # Time 2:T
+  # Time 2:T
   for (t in 2:time_points){
     # propose angles
     home_path <- tibble::tibble(x = data[1, 1] - particle_values[t-1,,1]  ,
                                 y = data[1, 2] - particle_values[t-1,,2]  )
     home_angle <-  useful::cart2pol(home_path$x, home_path$y)$theta
-    particle_values[t,,6] <- circular::rvonmises(num_particles, mu = circular::circular(0), kappa = kappa_val)
+    theta_tmp <- mnormt::rmnorm(num_particles, mean = mu_theta_val, varcov = diag(2))
+    particle_values[t,,6] <- useful::cart2pol(theta_tmp[,1], theta_tmp[,2])$theta
     particle_values[t,,3] <- cos(particle_values[t,,6] + home_angle) # x coord
     particle_values[t,,4] <- sin(particle_values[t,,6] + home_angle) # y coord
 
