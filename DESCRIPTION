@@ -19,4 +19,8 @@ Imports:
     stats,
     smcUtils,
     mnormt,
-    progress
+    progress,
+    foreach,
+    parallel,
+    doParallel,
+    purrr

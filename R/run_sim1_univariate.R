@@ -89,7 +89,6 @@ run_sim1_univariate <- function(num_mcmc, num_particles, data, m_mu, sigmasq_m,
                                                      b_sigmasq_eps + .5 * sum((state_variables[,iter, 1:2] - data)^2))
 
     # sample mu theta
-    state_variables[,iter,6]
     w_theta <- matrix(r_grid, time_points,m, byrow  = T) * exp(matrix(-.5 * r_grid^2, time_points,m, byrow  = T) +
                                                                  matrix(cbind(cos(state_variables[,iter,6]), sin(state_variables[,iter,6]))%*% mu_theta_samples[iter - 1, ],time_points,1) %*% matrix(r_grid, 1, m))
     for (pts in 1:time_points){
