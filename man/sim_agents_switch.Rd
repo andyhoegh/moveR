@@ -31,7 +31,7 @@ sim_agents_switch(num_agents, time_points, mu_true, sigma_true,
 \item{pi2}{Vector with probability of moving from state 2 to states 1 and 2}
 }
 \value{
-An array of dimension (num_agents X time_points x 2) containing the agent locations
+list with z as an array of dimension (num_agents X time_points x 2) containing the agent locations and state a vector that denotes state
 }
 \description{
 A Function to simulate animal movement with an ABM with a Markov switching process

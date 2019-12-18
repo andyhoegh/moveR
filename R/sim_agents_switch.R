@@ -11,7 +11,8 @@
 #' @param y_range Range of y-values to simulate starting points of agents
 #' @param pi1 Vector with probability of moving from state 1 to states 1 and 2
 #' @param pi2 Vector with probability of moving from state 2 to states 1 and 2
-#' @return An array of dimension (num_agents X time_points x 2) containing the agent locations
+#' @return list with z as an array of dimension (num_agents X time_points x 2) containing the agent locations and state a vector that denotes state
+#'
 #' @export
 sim_agents_switch <- function(num_agents, time_points, mu_true, sigma_true, mu_theta_true,
                               sigmasq_eps, sigmasq_eta, x_range, y_range, pi1, pi2){
@@ -85,5 +86,5 @@ sim_agents_switch <- function(num_agents, time_points, mu_true, sigma_true, mu_t
     # update observed locations
     z[,t,] <- s[,t,] + matrix(stats::rnorm(num_agents * 2, sd = sqrt(sigmasq_eps)), nrow = num_agents, ncol = 2)
   }
-  return(z)
+  return(list(z=z, states = states))
 }
