@@ -115,7 +115,6 @@ run_sim1 <- function(num_mcmc, num_particles, data, m_mu, sigmasq_m,
     exp_mu_theta <- cov_mu_theta %*% (colSums(x) + var_theta_inv %*% mu_theta_mean)
     mu_theta_samples[iter,] <- mnormt::rmnorm(1, exp_mu_theta, cov_mu_theta)
   }
-  pb$tick()
   return(list(state_variables = state_variables, accept_count = mean(accept_count), mu_theta_samples = mu_theta_samples,sigmasq_eps_samples=sigmasq_eps_samples,
               sigma_samples=sigma_samples, mu_samples=mu_samples))
 }

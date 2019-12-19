@@ -30,7 +30,7 @@ sim_agents_switch <- function(num_agents, time_points, mu_true, sigma_true, mu_t
                   stats::runif(num_agents, min = y_range[1], max = y_range[2]))
   z[,1,] <- s[,1,] + matrix(stats::rnorm(num_agents * 2, sd = sqrt(sigmasq_eps)), nrow = num_agents, ncol = 2)
 
-  states[,1] <- sample(2, 10,replace = T)
+  states[,1] <- sample(2, num_agents,replace = T)
 
   #  First Step (T = 2)
   for (agent in 1:num_agents){
@@ -60,7 +60,6 @@ sim_agents_switch <- function(num_agents, time_points, mu_true, sigma_true, mu_t
     for (agent in 1:num_agents){
       states[agent,t] <- sample(2,1, prob = pi[,states[agent,t-1]])
     }
-    states[,t]
 
     # update angle
     home_path <- tibble::tibble(x =z[,1,1]  - z[,t-1, 1], y = z[,1,2]  - z[,t-1, 2])
