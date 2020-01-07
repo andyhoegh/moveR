@@ -4,7 +4,7 @@
 #' @param num_particles The number of particles to use in particle filter
 #' @param data num_agents X time_points x 2 array of observed locations
 #' @param m_mu Prior values for step size mean: # mu ~ N(m_mu, sigmasq_m)
-#' @param sigmasq_m Prior values for step size mean: # mu ~ N(m_mu, sigmasq_m)
+#' @param sigmasq_m Prior values for step size variance: # mu ~ N(m_mu, sigmasq_m)
 #' @param nu Prior values for step size standard deviation: sigmasq_u ~ IG(nu/2,sigmasq0 * nu / 2)
 #' @param sigmasq0 Prior values for step size standard deviation: sigmasq_u ~ IG(nu/2,sigmasq0 * nu / 2)
 #' @param nu_eps Prior values for observation error: # sigmasq_eps ~ IG(nu_eps/2,nu_eps * sigmasq0_eps / 2)
