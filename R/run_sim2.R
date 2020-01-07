@@ -15,9 +15,9 @@
 #' @param mu_theta_mean Prior values for projected normal: mu_theta ~ N(mu_theta_mean, var_theta)
 #' @param var_theta Prior values for projected normal: mu_theta ~ N(mu_theta_mean, var_theta)
 #' @return A list containing the path and the log probability of the path
-#' @export
 #' @importFrom foreach %dopar%
-#' @importFrom(magrittr,"%>%")
+#' @importFrom magrittr %>%
+#' @export
 run_sim2 <- function(num_mcmc, num_particles, data, m_mu1, m_mu2, sigmasq_m1,sigmasq_m2,
                      nu, sigmasq01,sigmasq02, nu_eps, sigmasq0_eps, mu_theta_mean, var_theta){
   time_points <- dim(data)[2]

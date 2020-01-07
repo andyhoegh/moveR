@@ -16,7 +16,7 @@ run_sim1(num_mcmc, num_particles, data, m_mu, sigmasq_m, nu, sigmasq0,
 
 \item{m_mu}{Prior values for step size mean: # mu ~ N(m_mu, sigmasq_m)}
 
-\item{sigmasq_m}{Prior values for step size mean: # mu ~ N(m_mu, sigmasq_m)}
+\item{sigmasq_m}{Prior values for step size variance: # mu ~ N(m_mu, sigmasq_m)}
 
 \item{nu}{Prior values for step size standard deviation: sigmasq_u ~ IG(nu/2,sigmasq0 * nu / 2)}
 
