@@ -17,7 +17,8 @@
 #' @return A list containing the path and the log probability of the path
 #' @export
 #' @importFrom foreach %dopar%
-run_sim2 <- function(num_mcmc, num_particles, data, m_mu1, mu_mu2, sigmasq_m1,sigmasq_m2,
+#' @importFrom(magrittr,"%>%")
+run_sim2 <- function(num_mcmc, num_particles, data, m_mu1, m_mu2, sigmasq_m1,sigmasq_m2,
                      nu, sigmasq01,sigmasq02, nu_eps, sigmasq0_eps, mu_theta_mean, var_theta){
   time_points <- dim(data)[2]
   num_agents <- dim(data)[1]
@@ -66,11 +67,11 @@ run_sim2 <- function(num_mcmc, num_particles, data, m_mu1, mu_mu2, sigmasq_m1,si
     if (iter %% (num_mcmc / 100) == 0) pb$tick()
 
     ### pi_values
-    state_changes <- state_variables[,iter-1,7,] %>% reshape2::melt() %>% group_by(Var2) %>% mutate(value_prev = lag(value)) %>% ungroup() %>% filter(!is.na(value_prev)) %>% group_by(value, value_prev) %>% summarize(count = sum(value_prev, na.rm = T)) %>% ungroup()
-    pi_values[iter, 1] <- (state_changes %>% filter(value ==1, value_prev == 1) %>% select(count) / state_changes %>% filter(value_prev ==1,) %>% summarise(count = sum(count)) %>% select(count)) %>% as.numeric()
-    pi_values[iter, 2] <- (state_changes %>% filter(value ==2, value_prev == 1) %>% select(count) / state_changes %>% filter(value_prev ==1,) %>% summarise(count = sum(count)) %>% select(count)) %>% as.numeric()
-    pi_values[iter, 3] <- (state_changes %>% filter(value ==1, value_prev == 2) %>% select(count) / state_changes %>% filter(value_prev ==2,) %>% summarise(count = sum(count)) %>% select(count)) %>% as.numeric()
-    pi_values[iter, 4] <- (state_changes %>% filter(value ==2, value_prev == 2) %>% select(count) / state_changes %>% filter(value_prev ==2,) %>% summarise(count = sum(count)) %>% select(count)) %>% as.numeric()
+    state_changes <- state_variables[,iter-1,7,] %>% reshape2::melt() %>% dplyr::group_by(Var2) %>% dplyr::mutate(value_prev = dplyr::lag(value)) %>% dplyr::ungroup() %>% dplyr::filter(!is.na(value_prev)) %>% dplyr::group_by(value, value_prev) %>% dplyr::summarize(count = sum(value_prev, na.rm = T)) %>% dpylr::ungroup()
+    pi_values[iter, 1] <- (state_changes %>% dplyr::filter(value ==1, value_prev == 1) %>% dplyr::select(count) / state_changes %>% dplyr::filter(value_prev ==1,) %>% dplyr::summarise(count = sum(count)) %>% dplyr::select(count)) %>% as.numeric()
+    pi_values[iter, 2] <- (state_changes %>% dplyr::filter(value ==2, value_prev == 1) %>% dplyr::select(count) / state_changes %>% dplyr::filter(value_prev ==1,) %>% dplyr::summarise(count = sum(count)) %>% dplyr::select(count)) %>% as.numeric()
+    pi_values[iter, 3] <- (state_changes %>% dplyr::filter(value ==1, value_prev == 2) %>% dplyr::select(count) / state_changes %>% dplyr::filter(value_prev ==2,) %>% dplyr::summarise(count = sum(count)) %>% dplyr::select(count)) %>% as.numeric()
+    pi_values[iter, 4] <- (state_changes %>% dplyr::filter(value ==2, value_prev == 2) %>% dplyr::select(count) / state_changes %>% dplyr::filter(value_prev ==2,) %>% dplyr::summarise(count = sum(count)) %>% dplyr::select(count)) %>% as.numeric()
 
     ## inverse CDF step
     steps <- apply(state_variables[,iter - 1,c(5,7),], 2, rbind)

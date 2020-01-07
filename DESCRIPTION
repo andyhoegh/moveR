@@ -23,4 +23,5 @@ Imports:
     foreach,
     parallel,
     doParallel,
-    purrr
+    purrr,
+    reshape2
