@@ -67,7 +67,7 @@ run_sim2 <- function(num_mcmc, num_particles, data, m_mu1, m_mu2, sigmasq_m1,sig
     if (iter %% (num_mcmc / 100) == 0) pb$tick()
 
     ### pi_values
-    state_changes <- state_variables[,iter-1,7,] %>% reshape2::melt() %>% dplyr::group_by(Var2) %>% dplyr::mutate(value_prev = dplyr::lag(value)) %>% dplyr::ungroup() %>% dplyr::filter(!is.na(value_prev)) %>% dplyr::group_by(value, value_prev) %>% dplyr::summarize(count = sum(value_prev, na.rm = T)) %>% dpylr::ungroup()
+    state_changes <- state_variables[,iter-1,7,] %>% reshape2::melt() %>% dplyr::group_by(Var2) %>% dplyr::mutate(value_prev = dplyr::lag(value)) %>% dplyr::ungroup() %>% dplyr::filter(!is.na(value_prev)) %>% dplyr::group_by(value, value_prev) %>% dplyr::summarize(count = sum(value_prev, na.rm = T)) %>% dplyr::ungroup()
     pi_11 <- stats::rbeta(1, state_changes %>% dplyr::filter(value ==1, value_prev == 1) %>% dplyr::select(count) + 1, state_changes %>% dplyr::filter(value ==2, value_prev == 1) %>% dplyr::select(count) )
     pi_values[iter, 1] <- pi_11
     pi_values[iter, 2] <- 1 - pi_11
