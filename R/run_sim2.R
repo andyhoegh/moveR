@@ -135,8 +135,11 @@ run_sim2 <- function(num_mcmc, num_particles, data, m_mu1, m_mu2, sigmasq_m1,sig
                                                      b_sigmasq_eps + .5 * ss)
 
     # sample mu theta
-    w_theta <- matrix(r_grid, time_points * num_agents,m, byrow  = T) * exp(matrix(-.5 * r_grid^2, time_points* num_agents,m, byrow  = T) +
-                                                                              matrix(cbind(cos(as.numeric(state_variables[,iter,6,])), sin(as.numeric(state_variables[,iter,6,])))%*% mu_theta_samples[iter - 1, ],time_points* num_agents,1) %*% matrix(r_grid, 1, m))
+    w_theta <- matrix(r_grid, time_points * num_agents,m, byrow  = T) *
+      exp(matrix(-.5 * r_grid^2, time_points * num_agents,m, byrow  = T) +
+      matrix(cbind(cos(as.numeric(state_variables[,iter,6,])), sin(as.numeric(state_variables[,iter,6,]))) %*%
+               mu_theta_samples[iter - 1, ] ,time_points* num_agents,1) %*%
+        matrix(r_grid, 1, m))
     for (pts in 1:(time_points*num_agents)){
       r[pts] <- sample(r_grid,1, prob = w_theta[pts,])
     }
